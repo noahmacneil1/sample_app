@@ -25,40 +25,22 @@
 		}).addTo(map);
 
 		//var greenIcon = L.icon({ iconUrl: '/assets/marker-icon.png' });
-		//var markers = new L.MarkerClusterGroup();
-		//markers.addLayer(new L.Marker([51.505, -0.09]));
-		//markers.addLayer(new L.Marker([51.505, -0.09]));
-		//map.addLayer(markers);
 
 
+		L.marker([51.5, -0.09]).addTo(map)
+			.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
 
-var markers = L.markerClusterGroup({spiderfyOnMaxZoom: true, showCoverageOnHover: true, zoomToBoundsOnClick: false});
 
-		function populate() {
-			for (var i = 0; i < 100; i++) {
-				var m = L.marker(getRandomLatLng(map));
-				markers.addLayer(m);
-			}
-			return false;
-		}
-		function getRandomLatLng(map) {
-			var bounds = map.getBounds(),
-				southWest = bounds.getSouthWest(),
-				northEast = bounds.getNorthEast(),
-				lngSpan = northEast.lng - southWest.lng,
-				latSpan = northEast.lat - southWest.lat;
+		var popup = L.popup();
 
-			return L.latLng(
-					southWest.lat + latSpan * Math.random(),
-					southWest.lng + lngSpan * Math.random());
+		function onMapClick(e) {
+			popup
+				.setLatLng(e.latlng)
+				.setContent("You clicked the map at " + e.latlng.toString())
+				.openOn(map);
 		}
 
-		markers.on('clusterclick', function (a) {
-			a.layer.zoomToBounds();
-		});
-
-		populate();
-		map.addLayer(markers);
+		map.on('click', onMapClick);
 
 	</script>
 
